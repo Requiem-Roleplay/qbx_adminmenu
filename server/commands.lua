@@ -108,3 +108,4 @@ lib.addCommand('heading', {
 }, function(source)
     TriggerClientEvent('qbx_admin:client:copyToClipboard', source, 'heading')
 end)
+

@@ -234,3 +234,13 @@ lib.callback.register('qbx_admin:server:spawnVehicle', function(source, model)
     exports.qbx_vehiclekeys:GiveKeys(source, plate)
     return netId
 end)
+
+--- TODO: Add perms check
+lib.callback.register('qbx_admin:server:setSupportcall', function(target)
+    TriggerClientEvent('qbx_admin:client:setSupportcall', tonumber(target))
+end)
+
+lib.callback.register('qbx_admin:server:getSupportcall', function(target)
+    TriggerClientEvent('qbx_admin:client:stopSupportCall', tonumber(target))
+    return true
+end)

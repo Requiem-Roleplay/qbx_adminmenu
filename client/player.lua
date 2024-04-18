@@ -1,4 +1,5 @@
 local selectedPlayer
+local connectedId = ""
 local playerOptions = {
     function()
         lib.showMenu('qbx_adminmenu_player_general_menu', MenuIndexes.qbx_adminmenu_player_general_menu)
@@ -279,7 +280,9 @@ lib.registerMenu({
         {label = 'Open Inventory'},
         {label = 'Give Clothing Menu'},
         {label = 'Give Item'},
-        {label = 'Mute'}
+        {label = 'Mute'},
+        {label = 'Connect To Support'},
+        {label = 'Disconnect From Support'},
     }
 }, function(selected)
     if selected == 1 then
@@ -300,5 +303,31 @@ lib.registerMenu({
         ExecuteCommand('giveitem ' .. selectedPlayer.id .. ' ' .. dialog[1] .. ' ' .. dialog[2])
     elseif selected == 4 then
         exports['pma-voice']:toggleMutePlayer(selectedPlayer.id)
+    elseif selected == 5 then
+        -- TODO: Finish This.
+        --- https://github.com/FutureSeekerTech/fs-supports/blob/main/server.lua
+    elseif selected == 6 then
+        TriggerServerEvent('qbx_admin:server:disconnectFromSupport', selectedPlayer.id)
     end
 end)
+
+RegisterNetEvent('qbx_admin:client:setSupportcall', function()
+    exports['pma-voice']:addPlayerToCall('694204320')
+    lib.notify({
+        title = 'Support',
+        description = 'You have been added to the support call',
+        type = 'success',
+        position = 'top'
+    })
+end)
+
+RegisterNetEvent('qbx_admin:client:disconnectFromSupport', function()
+    exports['pma-voice']:removePlayerFromCall('694204320')
+    lib.notify({
+        title = 'Support',
+        description = 'You have been removed from the support call',
+        type = 'success',
+        position = 'top'
+    })
+end)
+

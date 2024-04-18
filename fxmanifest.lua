@@ -18,6 +18,7 @@ server_scripts {
 }
 
 client_scripts {
+    'config/funcs.lua',
     'client/*.lua',
 }
 

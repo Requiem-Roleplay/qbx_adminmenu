@@ -1,5 +1,7 @@
 local showCoords = false
 local vehicleDev = false
+local isDrawingLine = false
+local lineDistance = 5
 local vehicleTypes = {'Compacts', 'Sedans', 'SUVs', 'Coupes', 'Muscle', 'Sports Classics', 'Sports', 'Super', 'Motorcycles', 'Off-road', 'Industrial', 'Utility', 'Vans', 'Cycles', 'Boats', 'Helicopters', 'Planes', 'Service', 'Emergency', 'Military', 'Commercial', 'Trains', 'Open Wheel'}
 local options = {
     function() CopyToClipboard('coords2') lib.showMenu('qbx_adminmenu_dev_menu', MenuIndexes.qbx_adminmenu_dev_menu) end,
@@ -12,7 +14,7 @@ local options = {
             local coords, heading = GetEntityCoords(cache.ped), GetEntityHeading(cache.ped)
 
             qbx.drawText2d({
-                text = ('~o~vector4~w~(%s, %s, %s, %s)'):format(qbx.math.round(coords.x, 2), qbx.math.round(coords.y, 2), qbx.math.round(coords.z, 2), qbx.math.round(heading, 2)),
+                text = ('~p~vector4~w~(%s, %s, %s, %s)'):format(qbx.math.round(coords.x, 2), qbx.math.round(coords.y, 2), qbx.math.round(coords.z, 2), qbx.math.round(heading, 2)),
                 coords = vec2(1.0, 0.5),
                 scale = 0.5,
                 font = 6
@@ -59,6 +61,24 @@ local options = {
             end
         end
     end,
+    function()
+        local input = lib.inputDialog('Line Distance', {
+            {type = 'number', label = 'Distance', min = 0, max = 100}
+        })
+        if not input then lib.showMenu('qbx_adminmenu_dev_menu', MenuIndexes.qbx_adminmenu_dev_menu) return end
+        lineDistance = tonumber(input[1])
+    end,
+    function()
+        isDrawingLine = not isDrawingLine
+        if isDrawingLine then
+            exports.qbx_core:Notify("Coords Line On")
+        else
+            exports.qbx_core:Notify("Coords Line Off")
+        end
+    end,
+    function()
+        print("DEBUG COPY")
+    end,
 }
 
 lib.registerMenu({
@@ -76,8 +96,11 @@ lib.registerMenu({
         {label = locale('dev_options.label2'), description = locale('dev_options.desc2'), icon = 'fas fa-compass'},
         {label = locale('dev_options.label3'), description = locale('dev_options.desc3'), icon = 'fas fa-compass'},
         {label = locale('dev_options.label4'), description = locale('dev_options.desc4'), icon = 'fas fa-compass'},
-        {label = locale('dev_options.label5'), description = locale('dev_options.desc5'), icon = 'fas fa-compass-drafting', close = false},
-        {label = locale('dev_options.label6'), description = locale('dev_options.desc6'), icon = 'fas fa-car-side', close = false}
+        {label = locale('dev_options.label5'), description = locale('dev_options.desc5'), icon = 'fas fa-compass-drafting', close = false },
+        {label = locale('dev_options.label6'), description = locale('dev_options.desc6'), icon = 'fas fa-car-side', close = false },
+        {label = locale('dev_options.label7'), description = locale('dev_options.desc7'), icon = 'fas fa-arrow-up' },
+        {label = locale('dev_options.label8'), description = locale('dev_options.desc8'), icon = 'fas fa-arrow-up', close = false },
+        {label = locale('dev_options.label9'), description = locale('dev_options.desc9'), icon = 'fas fa-arrow-up', close = false },
     }
 }, function(selected)
     options[selected]()
