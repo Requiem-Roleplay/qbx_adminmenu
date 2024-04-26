@@ -137,7 +137,7 @@ function GeneratePlayersMenu()
     end
     local optionsList = {}
     for i = 1, #players do
-        optionsList[#optionsList + 1] = {label = string.format('ID: %s | Name: %s', players[i].id, players[i].name), description = string.format('CID: %s | %s', players[i].cid, players[i].license), args = {players[i]}}
+        optionsList[#optionsList + 1] = {label = string.format('ID: %s | Name: %s', players[i].id, players[i].name), description = string.format('CID: %s', players[i].cid), args = {players[i]}}
     end
     lib.registerMenu({
         id = 'qbx_adminmenu_players_menu',
@@ -286,7 +286,7 @@ lib.registerMenu({
     }
 }, function(selected)
     if selected == 1 then
-        ExecuteCommand(('viewinv %s'):format(selectedPlayer.id))
+        exports.ox_inventory:openInventory('player', selectedPlayer.id)
     elseif selected == 2 then
         local succeeded = lib.callback.await('qbx_admin:server:clothingMenu', false, selectedPlayer.id)
         if succeeded then return end
@@ -311,23 +311,6 @@ lib.registerMenu({
     end
 end)
 
-RegisterNetEvent('qbx_admin:client:setSupportcall', function()
-    exports['pma-voice']:addPlayerToCall('694204320')
-    lib.notify({
-        title = 'Support',
-        description = 'You have been added to the support call',
-        type = 'success',
-        position = 'top'
-    })
+RegisterNetEvent('qbx_admin:client:killPlayer', function()
+    SetEntityHealth(cache.ped, 0)
 end)
-
-RegisterNetEvent('qbx_admin:client:disconnectFromSupport', function()
-    exports['pma-voice']:removePlayerFromCall('694204320')
-    lib.notify({
-        title = 'Support',
-        description = 'You have been removed from the support call',
-        type = 'success',
-        position = 'top'
-    })
-end)
-
